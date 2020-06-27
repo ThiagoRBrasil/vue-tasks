@@ -1,0 +1,13 @@
+version: "3"
+services:
+  vue_tasks:
+    build:
+      context: "./"
+      dockerfile: "./Dockerfile_vue_tasks"
+    container_name: vue_tasks
+    volumes:
+      - ./:/app
+    ports:
+      - "9001:8080"
+    tty: true
+    command: bash -c "npm install && node_modules/.bin/webpack-dev-server --host 0.0.0.0"
