@@ -8,6 +8,6 @@
 import Login from "./components/login/Login";
 
 export default {
-  name: "app"
+  name: "app",
 };
 </script>
