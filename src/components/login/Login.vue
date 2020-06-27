@@ -27,8 +27,21 @@ export default {
 
   methods: {
     ...mapActions("login", ["doLogin"]),
+
     handleDoLogin(username, password) {
       this.doLogin({ username, password });
+    },
+
+    redirectToList() {
+      this.$router.push({ name: "listTaskgroup" });
+    }
+  },
+
+  watch: {
+    getToken(newToken) {
+      if (newToken) {
+        this.redirectToList();
+      }
     }
   },
 

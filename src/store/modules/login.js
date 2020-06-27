@@ -14,16 +14,17 @@ const login = {
     },
   },
   actions: {
-    doLogin({ commit }, { username, password }) {
-      doLoginApi(username, password).then(
-        (response) => {
-          localStorage.token = response.data.token;
-          commit("setToken", response.data.token);
-        },
-        (error) => {
-          console.log(error.response.data.error_message);
-        }
-      );
+    async doLogin({ commit }, { username, password }) {
+      try {
+        const response = await doLoginApi(username, password);
+        const {
+          data: { token },
+        } = response;
+        localStorage.token = token;
+        commit("setToken", token);
+      } catch (error) {
+        console.log(error.response.data.error_message);
+      }
     },
   },
 };
