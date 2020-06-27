@@ -1,9 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import login from "../store/modules/login";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
+  modules: {
+    login
+  },
   state: {
     taskgroups: [],
     taskgroup: {},
