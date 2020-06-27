@@ -1,39 +1,54 @@
+import {
+  deleteTaskitemApi,
+  updateTaskItemApi
+} from "../../services/api";
+
 const taskItem = {
   namespaced: true,
   state: {
     taskItems: [],
-    taskitem: {},
+    taskitem: {}
   },
   getters: {},
   mutations: {
-    getTaskitem(state, id) {
-      const stateTaskitem = state.taskItems.find((e) => e.id == id);
-      state.taskitem = stateTaskitem.task;
-    },
-    setTaskitem(state, taskitem) {
-      const stateTaskitem = state.taskItems.find((e) => e.id == taskitem.id);
-
-      const mutableTaskitem = {
-        ...stateTaskitem,
-        checked: taskitem.checked,
-      };
-
-      const index = state.taskItems.indexOf(stateTaskitem);
-      Object.assign(state.taskItems[index], mutableTaskitem);
-    },
-    removeTaskitem(state, id) {
-      const stateTaskitem = state.taskItems.find((e) => e.id == id);
-      const index = state.taskItems.indexOf(stateTaskitem);
-
-      state.taskItems.splice(index);
-    },
-    updateTaskItems(state, taskItems) {
-      state.taskItems = taskItems;
+    assign(state, value) {
+      Object.assign(state, value);
     },
   },
   actions: {
+    getTaskitem({ commit, state }, id) {
+      const stateTaskitem = state.taskItems.find(item => item.id == id);
+
+      commit('assign', { taskitem: stateTaskitem.task });
+    },
     setTaskitems({ commit }, taskItems) {
-      commit("updateTaskItems", taskItems);
+      commit('assign', { taskItems });
+    },
+    setTaskitem({ commit, state }, mutableTaskItem) {
+      updateTaskItemApi(mutableTaskItem).then(
+        _result => {
+          const newTaskItems = state.taskItems.map(item => {
+            if (item.id === mutableTaskItem.id) {
+              return Object.assign({}, item, mutableTaskItem );
+            }
+
+            return item;
+          })
+
+          commit('assign', { taskItems: newTaskItems });
+        },
+        error => console.error(error)
+      );
+    },
+    removeTaskitem({ commit, state }, id) {
+      deleteTaskitemApi(id).then(
+        _result => {
+          const newTaskItems = state.taskItems.filter(item => item.id !== id);
+
+          commit('assign', { taskItems: newTaskItems });
+        },
+        error => console.error(error)
+      );
     },
   },
 };
