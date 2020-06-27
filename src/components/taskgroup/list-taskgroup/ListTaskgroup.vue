@@ -17,18 +17,17 @@
 </template>
 
 <script>
-import { deleteTaskgroupApi } from "../../../services/api";
-import { mapState, mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
-  mounted: function () {
+  mounted: function() {
     this.fetchTaskGroups();
   },
   computed: {
-    ...mapState("taskGroup", ["taskgroups"]),
+    ...mapState('taskGroup', ['taskgroups'])
   },
   methods: {
-    ...mapActions("taskGroup", ["fetchTaskGroups", "deleteTaskgroup"]),
+    ...mapActions('taskGroup', ['fetchTaskGroups', 'deleteTaskgroup']),
     doLogout() {
       localStorage.removeItem("token");
       this.$router.push({ name: "login" });
@@ -36,6 +35,6 @@ export default {
     newTaskgroup() {
       this.$router.push({ name: "newTaskgroup" });
     },
-  },
+  }
 };
 </script>

@@ -20,33 +20,28 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      username: "thiago",
-      password: "123456"
+      username: "",
+      password: ""
     };
   },
-
-  methods: {
-    ...mapActions("login", ["doLogin"]),
-
-    handleDoLogin(username, password) {
-      this.doLogin({ username, password });
-    },
-
-    redirectToList() {
-      this.$router.push({ name: "listTaskgroup" });
-    }
+  computed: {
+    ...mapGetters('login', ['getToken']),
   },
-
   watch: {
     getToken(newToken) {
-      if (newToken) {
-        this.redirectToList();
-      }
+      if(newToken) this.redirectToList()
     }
   },
+  methods: {
+    ...mapActions('login', ['doLogin']),
+    handleDoLogin(username, password) {
+      const payload = { username, password };
 
-  computed: {
-    ...mapGetters("login", ["getToken"])
+      this.doLogin(payload);
+    },
+    redirectToList(){
+      this.$router.push({ name: "listTaskgroup" });
+    }
   }
 };
 </script>

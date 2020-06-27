@@ -11,9 +11,7 @@
     <label for="description">Description: {{ taskgroup.description }}</label>
     <br />
 
-    <label for="frequence_type"
-      >Frequence Type: {{ taskgroup.frequence_type }}</label
-    >
+    <label for="frequence_type">Frequence Type: {{ taskgroup.frequence_type }}</label>
     <br />
     <br />
     <button @click="back()">Back</button>
@@ -26,9 +24,8 @@
 </template>
 
 <script>
-import { getTaskgroupApi } from "../../../services/api";
 import ListTaskitem from "../../taskitem/list-taskitem/ListTaskitem";
-import { mapState, mapMutations } from "vuex";
+import { mapActions, mapState } from "vuex";
 
 export default {
   props: ["id"],
@@ -39,12 +36,13 @@ export default {
     ...mapState("taskGroup", ["taskgroup"])
   },
   mounted: function() {
-    getTaskgroupApi(this.id).then(response => {
-      this.setTaskgroup(response.data.data);
+    this.setTaskgroup(this.id).then(response => {
+      this.setTaskitems(response.task_in_lists);
     });
   },
   methods: {
-    ...mapMutations("taskGroup", ["setTaskgroup"]),
+    ...mapActions("taskGroup", ["setTaskgroup"]),
+    ...mapActions("taskItem", ["setTaskitems"]),
     back() {
       this.$router.back();
     },

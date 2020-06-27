@@ -30,13 +30,13 @@ import { mapState, mapMutations } from "vuex";
 
 export default {
   methods: {
-    ...mapMutations("taskItem", ["setTaskitem", "removeTaskitem"]),
+    ...mapMutations('taskItem', ['setTaskitem', 'removeTaskitem']),
     formatTaskItem(taskItem) {
       return {
         id: taskItem.id,
         checked: taskItem.checked,
         name: taskItem.task.name,
-        description: taskItem.task.description,
+        description: taskItem.task.description
       };
     },
     isTaskItemChecked({ checked }) {
@@ -45,11 +45,11 @@ export default {
     updateCheckTaskItem(taskItem) {
       const mutableTaskItem = {
         id: taskItem.id,
-        checked: !taskItem.checked,
+        checked: !taskItem.checked
       };
       updateTaskItemApi(mutableTaskItem).then(
-        (result) => this.setTaskitem(mutableTaskItem),
-        (error) => console.log(error)
+        result => this.setTaskitem(mutableTaskItem),
+        error => console.log(error)
       );
     },
     updateTaskitem(id) {
@@ -57,15 +57,15 @@ export default {
     },
     deleteTaskitem(taskitemId) {
       deleteTaskitemApi(taskitemId).then(
-        (result) => this.removeTaskitem(taskitemId),
-        (error) => console.log(error)
+        result => this.removeTaskitem(taskitemId),
+        error => console.log(error)
       );
       // this.removeTaskitem(taskitemId)
-    },
+    }
   },
   computed: {
-    ...mapState("taskGroup", ["taskItems"]),
-    formattedTaskItems: function () {
+    ...mapState('taskItem', ['taskItems']),
+    formattedTaskItems: function() {
       const { taskItems, formatTaskItem } = this;
 
       if (!taskItems) {
@@ -74,15 +74,15 @@ export default {
 
       return taskItems.map(formatTaskItem);
     },
-    taskItemsOverview: function () {
+    taskItemsOverview: function() {
       const { formattedTaskItems, isTaskItemChecked } = this;
 
       const length = formattedTaskItems.length;
       const checkedLength = formattedTaskItems.filter(isTaskItemChecked).length;
 
       return `${checkedLength} of ${length} are checked`;
-    },
-  },
+    }
+  }
 };
 </script>
 

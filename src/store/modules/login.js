@@ -1,30 +1,31 @@
-import { doLoginApi } from "../../services/api";
+import { doLoginApi } from '../../services/api';
 
 const login = {
   namespaced: true,
   state: {
-    token: "",
+    token: null
   },
   getters: {
-    getToken: (state) => state.token,
+    getToken: state => state.token,
   },
   mutations: {
-    setToken: (state, token) => {
-      state.token = token;
+    setToken: (state, payload) => {
+      state.token = payload.token;
     },
   },
   actions: {
-    async doLogin({ commit }, { username, password }) {
+    async doLogin({ commit }, value) {
+      const { username, password } = value;
+
       try {
-        const response = await doLoginApi(username, password);
-        const {
-          data: { token },
-        } = response;
+        const response = await doLoginApi(username, password)
+        const { data: { token }} = response;
+
         localStorage.token = token;
-        commit("setToken", token);
-      } catch (error) {
-        console.log(error.response.data.error_message);
-      }
+        commit('setToken', { token });
+      } catch(error) {
+        console.error(error.response.data.error_message);
+      };
     },
   },
 };

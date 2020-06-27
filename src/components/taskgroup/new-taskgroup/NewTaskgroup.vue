@@ -39,7 +39,7 @@ export default {
     };
   },
   methods: {
-    ...mapMutations("taskGroup", ["addTaskgroups"]),
+    ...mapMutations('taskGroup', ['addTaskgroups']),
     back() {
       this.$router.back();
     },
